@@ -1,5 +1,5 @@
 resource "google_compute_instance" "default" {
-  #checkov:skip=CKV_GCP_38:
+  #checkov:skip=CKV_GCP_38:gcp encrypted by default
   name         = var.name
   machine_type = var.machine_type
   zone         = var.zone
@@ -30,7 +30,6 @@ resource "google_compute_instance" "default" {
   metadata_startup_script = var.metadata_startup_script
 
   service_account {
-    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
     email = data.google_service_account.default.email
     scopes = ["https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/logging.write",
