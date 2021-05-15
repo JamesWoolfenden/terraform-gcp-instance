@@ -36,36 +36,36 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| google | n/a |
+| <a name="provider_google"></a> [google](#provider\_google) | n/a |
 
 ## Modules
 
-No Modules.
+No modules.
 
 ## Resources
 
-| Name |
-|------|
-| [google_compute_instance](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance) |
-| [google_service_account](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/service_account) |
+| Name | Type |
+|------|------|
+| [google_compute_instance.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance) | resource |
+| [google_service_account.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/service_account) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| account\_id | n/a | `any` | n/a | yes |
-| common\_tags | n/a | `map(any)` | <pre>{<br>  "module": "terraform-gco-instance"<br>}</pre> | no |
-| image | n/a | `string` | `"debian-cloud/debian-10"` | no |
-| labels | n/a | `map` | <pre>{<br>  "jim": "a"<br>}</pre> | no |
-| machine\_type | n/a | `string` | `"e2-medium"` | no |
-| metadata | n/a | `map(any)` | <pre>{<br>  "block-project-ssh-keys": true<br>}</pre> | no |
-| metadata\_startup\_script | (optional) describe your variable | `string` | `""` | no |
-| name | n/a | `string` | `"instance-1"` | no |
-| zone | n/a | `string` | `"us-central1-a"` | no |
+| <a name="input_account_id"></a> [account\_id](#input\_account\_id) | n/a | `any` | n/a | yes |
+| <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | n/a | `map(any)` | <pre>{<br>  "module": "terraform-gco-instance"<br>}</pre> | no |
+| <a name="input_image"></a> [image](#input\_image) | n/a | `string` | `"debian-cloud/debian-10"` | no |
+| <a name="input_labels"></a> [labels](#input\_labels) | n/a | `map` | <pre>{<br>  "jim": "a"<br>}</pre> | no |
+| <a name="input_machine_type"></a> [machine\_type](#input\_machine\_type) | n/a | `string` | `"e2-medium"` | no |
+| <a name="input_metadata"></a> [metadata](#input\_metadata) | n/a | `map(any)` | <pre>{<br>  "block-project-ssh-keys": true<br>}</pre> | no |
+| <a name="input_metadata_startup_script"></a> [metadata\_startup\_script](#input\_metadata\_startup\_script) | (optional) describe your variable | `string` | `""` | no |
+| <a name="input_name"></a> [name](#input\_name) | n/a | `string` | `"instance-1"` | no |
+| <a name="input_zone"></a> [zone](#input\_zone) | n/a | `string` | `"us-central1-a"` | no |
 
 ## Outputs
 
-No output.
+No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Information
