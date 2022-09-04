@@ -36,7 +36,7 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | n/a |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.34.0 |
 
 ## Modules
 
@@ -68,6 +68,33 @@ No modules.
 No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
+## Role and Permissions
+
+<!-- BEGINNING OF PRE-COMMIT-PIKE DOCS HOOK -->
+The Terraform resource required is:
+
+```golang
+resource "google_project_iam_custom_role" "terraformXVlBzgba" {
+  project     = "examplea"
+  role_id     = "terraform_pike"
+  title       = "terraformXVlBzgba"
+  description = "A user with least privileges"
+  permissions = [
+    "compute.disks.create",
+    "compute.instances.create",
+    "compute.instances.delete",
+    "compute.instances.get",
+    "compute.instances.setMetadata",
+    "compute.subnetworks.use",
+    "compute.subnetworks.useExternalIp",
+    "compute.zones.get",
+    "iam.serviceAccounts.get"
+  ]
+}
+
+```
+<!-- END OF PRE-COMMIT-PIKE DOCS HOOK -->
+
 ## Information
 
 ## Related Projects
@@ -90,7 +117,7 @@ Please use the [issue tracker](https://github.com/jameswoolfenden/terraform-aws-
 
 ## Copyrights
 
-Copyright 2021 James Woolfenden
+Copyright © 2021-2022 James Woolfenden
 
 ## License
 
@@ -121,11 +148,3 @@ under the License.
 
 [jameswoolfenden_homepage]: https://github.com/jameswoolfenden
 [jameswoolfenden_avatar]: https://github.com/jameswoolfenden.png?size=150
-[github]: https://github.com/jameswoolfenden
-[linkedin]: https://www.linkedin.com/in/jameswoolfenden/
-[twitter]: https://twitter.com/JimWoolfenden
-[share_twitter]: https://twitter.com/intent/tweet/?text=terraform-aws-instance&url=https://github.com/jameswoolfenden/terraform-aws-instance
-[share_linkedin]: https://www.linkedin.com/shareArticle?mini=true&title=terraform-aws-instance&url=https://github.com/jameswoolfenden/terraform-aws-instance
-[share_reddit]: https://reddit.com/submit/?url=https://github.com/jameswoolfenden/terraform-aws-instance
-[share_facebook]: https://facebook.com/sharer/sharer.php?u=https://github.com/jameswoolfenden/terraform-aws-instance
-[share_email]: mailto:?subject=terraform-aws-instance&body=https://github.com/jameswoolfenden/terraform-aws-instance

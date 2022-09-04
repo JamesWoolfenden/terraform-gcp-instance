@@ -1,4 +1,4 @@
-module "example" {
+module "instance" {
   source      = "../../"
   common_tags = var.common_tags
   name        = "instance-1"
