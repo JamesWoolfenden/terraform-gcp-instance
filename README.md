@@ -54,11 +54,10 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_id"></a> [account\_id](#input\_account\_id) | n/a | `any` | n/a | yes |
-| <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | n/a | `map(any)` | <pre>{<br>  "module": "terraform-gco-instance"<br>}</pre> | no |
+| <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | n/a | `map(any)` | <pre>{<br>  "module": "terraform-gcp-instance"<br>}</pre> | no |
 | <a name="input_image"></a> [image](#input\_image) | n/a | `string` | `"debian-cloud/debian-10"` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | n/a | `map` | <pre>{<br>  "jim": "a"<br>}</pre> | no |
 | <a name="input_machine_type"></a> [machine\_type](#input\_machine\_type) | n/a | `string` | `"e2-medium"` | no |
-| <a name="input_metadata"></a> [metadata](#input\_metadata) | n/a | `map(any)` | <pre>{<br>  "block-project-ssh-keys": true<br>}</pre> | no |
 | <a name="input_metadata_startup_script"></a> [metadata\_startup\_script](#input\_metadata\_startup\_script) | (optional) describe your variable | `string` | `""` | no |
 | <a name="input_name"></a> [name](#input\_name) | n/a | `string` | `"instance-1"` | no |
 | <a name="input_zone"></a> [zone](#input\_zone) | n/a | `string` | `"us-central1-a"` | no |

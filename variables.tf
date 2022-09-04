@@ -12,18 +12,13 @@ variable "image" {
 variable "common_tags" {
   type = map(any)
   default = {
-    module = "terraform-gco-instance"
+    module = "terraform-gcp-instance"
   }
 }
 
-variable "metadata" {
-  type = map(any)
-  default = {
-    block-project-ssh-keys = true
-  }
+variable "labels" {
+  default = { "jim" = "a" }
 }
-
-
 variable "name" { default = "instance-1" }
 variable "machine_type" { default = "e2-medium" }
 variable "zone" { default = "us-central1-a" }

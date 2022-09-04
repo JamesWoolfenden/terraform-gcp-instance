@@ -15,23 +15,21 @@ resource "google_compute_instance" "default" {
 
   network_interface {
     network = "default"
-
-    access_config {
-      // Ephemeral IP
-    }
   }
 
   shielded_instance_config {
     enable_secure_boot = true
   }
 
-  metadata = var.metadata
-
+  metadata = {
+    block-project-ssh-keys = true
+  }
   metadata_startup_script = var.metadata_startup_script
 
   service_account {
     email = data.google_service_account.default.email
-    scopes = ["https://www.googleapis.com/auth/devstorage.read_only",
+    scopes = [
+      "https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring.write",
       "https://www.googleapis.com/auth/service.management.readonly",
@@ -39,8 +37,4 @@ resource "google_compute_instance" "default" {
     "https://www.googleapis.com/auth/trace.append"]
   }
 
-}
-
-variable "labels" {
-  default = { "jim" = "a" }
 }
