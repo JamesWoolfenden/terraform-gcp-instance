@@ -1,6 +1,6 @@
 # terraform-gcp-instance
 
-[![Build Status](https://github.com/JamesWoolfenden/terraform-gcp-instance/workflows/Verify%20and%20Bump/badge.svg?branch=master)](https://github.com/JamesWoolfenden/terraform-gcp-instance)
+[![Build Status](https://github.com/JamesWoolfenden/terraform-gcp-instance/workflows/Verify/badge.svg?branch=master)](https://github.com/JamesWoolfenden/terraform-gcp-instance)
 [![Latest Release](https://img.shields.io/github/release/JamesWoolfenden/terraform-gcp-instance.svg)](https://github.com/JamesWoolfenden/terraform-gcp-instance/releases/latest)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/JamesWoolfenden/terraform-gcp-instance.svg?label=latest)](https://github.com/JamesWoolfenden/terraform-gcp-instance/releases/latest)
 ![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.14.0-blue.svg)
@@ -73,10 +73,11 @@ No outputs.
 The Terraform resource required is:
 
 ```golang
-resource "google_project_iam_custom_role" "terraformXVlBzgba" {
-  project     = "examplea"
+
+resource "google_project_iam_custom_role" "terraform_pike" {
+  project     = "pike"
   role_id     = "terraform_pike"
-  title       = "terraformXVlBzgba"
+  title       = "terraform_pike"
   description = "A user with least privileges"
   permissions = [
     "compute.disks.create",
@@ -90,6 +91,7 @@ resource "google_project_iam_custom_role" "terraformXVlBzgba" {
     "iam.serviceAccounts.get"
   ]
 }
+
 
 ```
 <!-- END OF PRE-COMMIT-PIKE DOCS HOOK -->
@@ -116,7 +118,7 @@ Please use the [issue tracker](https://github.com/jameswoolfenden/terraform-aws-
 
 ## Copyrights
 
-Copyright © 2021-2022 James Woolfenden
+Copyright © 2021-2023 James Woolfenden
 
 ## License
 
