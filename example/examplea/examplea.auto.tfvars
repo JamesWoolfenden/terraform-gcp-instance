@@ -2,6 +2,6 @@
 common_tags = {
   createdby = "Terraform"
 module = "terraform-gcp-instance" }
-project    = "pike-361314"
+project    = "pike-gcp"
 region     = "europe-west2"
-account_id = "pike-365@pike-361314.iam.gserviceaccount.com"
+account_id = "pike-service@pike-gcp.iam.gserviceaccount.com"
