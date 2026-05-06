@@ -4,10 +4,8 @@
 [![Latest Release](https://img.shields.io/github/release/JamesWoolfenden/terraform-gcp-instance.svg)](https://github.com/JamesWoolfenden/terraform-gcp-instance/releases/latest)
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/JamesWoolfenden/terraform-gcp-instance.svg?label=latest)](https://github.com/JamesWoolfenden/terraform-gcp-instance/releases/latest)
 ![Terraform Version](https://img.shields.io/badge/tf-%3E%3D0.14.0-blue.svg)
-[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/JamesWoolfenden/terraform-gcp-instance/cis_aws)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=JamesWoolfenden%2Fterraform-gcp-instance&benchmark=CIS+AWS+V1.2)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![checkov](https://img.shields.io/badge/checkov-verified-brightgreen)](https://www.checkov.io/)
-[![Infrastructure Tests](https://www.bridgecrew.cloud/badges/github/jameswoolfenden/terraform-gcp-instance/general)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=JamesWoolfenden%2Fterraform-gcp-instance&benchmark=INFRASTRUCTURE+SECURITY)
 
 ## Usage
 
@@ -75,16 +73,19 @@ The Terraform resource required is:
 ```golang
 
 resource "google_project_iam_custom_role" "terraform_pike" {
-  project     = "pike"
+  project     = "pike-477416"
   role_id     = "terraform_pike"
   title       = "terraform_pike"
   description = "A user with least privileges"
   permissions = [
     "compute.disks.create",
+    "compute.disks.setLabels",
     "compute.instances.create",
     "compute.instances.delete",
     "compute.instances.get",
+    "compute.instances.setLabels",
     "compute.instances.setMetadata",
+    "compute.instances.updateNetworkInterface",
     "compute.subnetworks.use",
     "compute.subnetworks.useExternalIp",
     "compute.zones.get",
@@ -118,7 +119,7 @@ Please use the [issue tracker](https://github.com/jameswoolfenden/terraform-aws-
 
 ## Copyrights
 
-Copyright © 2021-2023 James Woolfenden
+Copyright © 2021-2026 James Woolfenden
 
 ## License
 
