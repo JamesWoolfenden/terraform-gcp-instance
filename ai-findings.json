@@ -1,0 +1,59 @@
+{
+  "findings": [
+    {
+      "confidence": "high",
+      "explanation": "google_compute_instance.default uses var.kms_key_self_link (boot_disk) and var.network (network_interface) but neither is declared in variables.tf. HLD_GCP_092 fires as a symptom (kms_key_self_link resolves null) but the root cause is the missing declarations. Additionally, the example module call passes common_tags = var.common_tags, which is declared in neither the module's variables.tf nor the example's variables.tf \u2014 a second undeclared-variable error on the caller side.",
+      "file": "variables.tf",
+      "id": "HOLDEN_AI_001",
+      "line": 1,
+      "principle": "repeatability",
+      "related_resources": [
+        "example/examplea/module.instance.tf"
+      ],
+      "remediation": "Add kms_key_self_link and network to module variables.tf. Remove common_tags from the example module call (labels are applied via provider default_labels).",
+      "resource": "google_compute_instance.default",
+      "severity": "HIGH",
+      "title": "Module variables.tf missing kms_key_self_link and network; example passes undeclared common_tags \u2014 terraform plan fails"
+    },
+    {
+      "confidence": "high",
+      "explanation": "var.image defaults to 'debian-cloud/debian-10' (Debian 10 Buster). Debian 10 reached End of Life in June 2024; Google stopped publishing OS patch updates for this image family at that date. Any instance using this default receives no security patches, leaving known CVEs unmitigated. HLD_GCP_092 and all existing GCE policies check configuration attributes, not the OS image EOL status, so no deterministic rule catches this.",
+      "file": "variables.tf",
+      "id": "HOLDEN_AI_002",
+      "line": 9,
+      "principle": "patch-management",
+      "related_resources": [],
+      "remediation": "Update the default to a supported Debian release: default = \"debian-cloud/debian-12\". Add a validation warning if callers pass a known EOL image family.",
+      "resource": "google_compute_instance.default",
+      "severity": "HIGH",
+      "title": "Default image debian-cloud/debian-10 is End of Life (June 2024) \u2014 no security patches published"
+    },
+    {
+      "confidence": "high",
+      "explanation": "The module's outputs.tf has no output blocks. Any module consumer that needs to reference the instance (e.g. to create firewall rules, attach disks, build DNS records, or pass the instance ID to another module) must reach into module internals or recreate the resource lookup outside the module. This breaks the module's contract as a self-contained unit. No holden rule checks for missing outputs.",
+      "file": "outputs.tf",
+      "id": "HOLDEN_AI_003",
+      "line": 1,
+      "principle": "governance",
+      "related_resources": [],
+      "remediation": "Add at minimum: output \"instance_id\", output \"self_link\", output \"instance_name\", and output \"internal_ip\" (from network_interface[0].network_ip).",
+      "resource": "google_compute_instance.default",
+      "severity": "MEDIUM",
+      "title": "outputs.tf is empty \u2014 callers cannot reference the instance ID, self_link, internal IP, or any other attribute"
+    },
+    {
+      "confidence": "high",
+      "explanation": "variable.metadata_startup_script sets description = \"\" (an empty string). HLD_TF_006 checks that description is not_null, and an empty string satisfies that check. The variable documents nothing: not what the script should do, what interpreter runs it, or what permissions it has. Startup scripts run as root with the instance's service account credentials, making them a high-privilege execution path.",
+      "file": "variables.tf",
+      "id": "HOLDEN_AI_004",
+      "line": 5,
+      "principle": "governance",
+      "related_resources": [],
+      "remediation": "Replace description = \"\" with a meaningful description such as: \"Shell script to run on instance boot; runs as root with the instance service account credentials. Leave empty to disable.\"",
+      "resource": "google_compute_instance.default",
+      "severity": "LOW",
+      "title": "metadata_startup_script description is an empty string \u2014 passes HLD_TF_006 but provides no information to callers"
+    }
+  ],
+  "suggested_policies": []
+}

@@ -1,25 +1,76 @@
+variable "account_id" {
+  type        = string
+  description = "The account ID of the service account to attach to the instance"
+  validation {
+    condition     = length(trimspace(var.account_id)) > 0
+    error_message = "account_id must not be empty."
+  }
+}
+
+variable "image" {
+  type        = string
+  default     = "debian-cloud/debian-12"
+  description = "Boot disk image for the compute instance; must be a supported, non-EOL image family"
+  validation {
+    condition     = length(trimspace(var.image)) > 0
+    error_message = "image must not be empty."
+  }
+}
+
+variable "kms_key_self_link" {
+  type        = string
+  description = "Self-link of the KMS CryptoKey used to encrypt the boot disk"
+  validation {
+    condition     = length(trimspace(var.kms_key_self_link)) > 0
+    error_message = "kms_key_self_link must not be empty."
+  }
+}
+
+variable "machine_type" {
+  type        = string
+  default     = "e2-medium"
+  description = "Machine type for the compute instance"
+  validation {
+    condition     = length(trimspace(var.machine_type)) > 0
+    error_message = "machine_type must not be empty."
+  }
+}
 
 variable "metadata_startup_script" {
   type        = string
   default     = ""
-  description = "(optional) describe your variable"
-}
-
-variable "image" {
-  default = "debian-cloud/debian-10"
-}
-
-variable "common_tags" {
-  type = map(any)
-  default = {
-    module = "terraform-gcp-instance"
+  description = "Shell script to run on instance boot; runs as root with the instance service account credentials. Leave empty to disable."
+  validation {
+    condition     = var.metadata_startup_script == "" || length(trimspace(var.metadata_startup_script)) > 0
+    error_message = "metadata_startup_script must be empty or a non-whitespace string."
   }
 }
 
-variable "labels" {
-  default = { "jim" = "a" }
+variable "name" {
+  type        = string
+  default     = "instance-1"
+  description = "Name of the compute instance"
+  validation {
+    condition     = can(regex("^[a-z]([-a-z0-9]*[a-z0-9])?$", var.name))
+    error_message = "name must start with a lowercase letter, contain only lowercase letters, digits, and hyphens, and not end with a hyphen."
+  }
 }
-variable "name" { default = "instance-1" }
-variable "machine_type" { default = "e2-medium" }
-variable "zone" { default = "us-central1-a" }
-variable "account_id" {}
+
+variable "network" {
+  type        = string
+  description = "Self-link or name of the VPC network to attach the instance to"
+  validation {
+    condition     = length(trimspace(var.network)) > 0
+    error_message = "network must not be empty."
+  }
+}
+
+variable "zone" {
+  type        = string
+  default     = "us-central1-a"
+  description = "Zone in which to create the compute instance"
+  validation {
+    condition     = can(regex("^[a-z]+-[a-z0-9]+-[a-z]$", var.zone))
+    error_message = "zone must be a valid GCP zone in the format region-zone (e.g. us-central1-a)."
+  }
+}

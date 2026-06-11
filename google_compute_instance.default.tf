@@ -1,20 +1,19 @@
 resource "google_compute_instance" "default" {
-  #checkov:skip=CKV_GCP_38:gcp encrypted by default
   name         = var.name
   machine_type = var.machine_type
   zone         = var.zone
 
 
   boot_disk {
+    kms_key_self_link = var.kms_key_self_link
+
     initialize_params {
       image = var.image
     }
   }
 
-  labels = var.labels
-
   network_interface {
-    network = "default"
+    network = var.network
   }
 
   shielded_instance_config {
@@ -23,6 +22,7 @@ resource "google_compute_instance" "default" {
 
   metadata = {
     block-project-ssh-keys = true
+    enable-oslogin         = "TRUE"
   }
   metadata_startup_script = var.metadata_startup_script
 
@@ -34,7 +34,8 @@ resource "google_compute_instance" "default" {
       "https://www.googleapis.com/auth/monitoring.write",
       "https://www.googleapis.com/auth/service.management.readonly",
       "https://www.googleapis.com/auth/servicecontrol",
-    "https://www.googleapis.com/auth/trace.append"]
+      "https://www.googleapis.com/auth/trace.append"
+    ]
   }
 
 }
