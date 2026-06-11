@@ -1,5 +1,6 @@
 resource "google_compute_instance" "default" {
   name         = var.name
+  project      = var.project
   machine_type = var.machine_type
   zone         = var.zone
 

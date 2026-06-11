@@ -56,6 +56,7 @@ No modules.
 | <a name="input_metadata_startup_script"></a> [metadata\_startup\_script](#input\_metadata\_startup\_script) | Shell script to run on instance boot; runs as root with the instance service account credentials. Leave empty to disable. | `string` | `""` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the compute instance | `string` | `"instance-1"` | no |
 | <a name="input_network"></a> [network](#input\_network) | Self-link or name of the VPC network to attach the instance to | `string` | n/a | yes |
+| <a name="input_project"></a> [project](#input\_project) | GCP project ID | `string` | n/a | yes |
 | <a name="input_scopes"></a> [scopes](#input\_scopes) | OAuth scopes granted to the instance service account | `list(string)` | <pre>[<br/>  "https://www.googleapis.com/auth/devstorage.read_only",<br/>  "https://www.googleapis.com/auth/logging.write",<br/>  "https://www.googleapis.com/auth/monitoring.write",<br/>  "https://www.googleapis.com/auth/service.management.readonly",<br/>  "https://www.googleapis.com/auth/servicecontrol",<br/>  "https://www.googleapis.com/auth/trace.append"<br/>]</pre> | no |
 | <a name="input_service_account_email"></a> [service\_account\_email](#input\_service\_account\_email) | Email of the service account to attach to the instance; typically an output from a service account module | `string` | n/a | yes |
 | <a name="input_zone"></a> [zone](#input\_zone) | Zone in which to create the compute instance | `string` | `"us-central1-a"` | no |

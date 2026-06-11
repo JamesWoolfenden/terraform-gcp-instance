@@ -91,3 +91,12 @@ variable "zone" {
     error_message = "zone must be a valid GCP zone in the format region-zone (e.g. us-central1-a)."
   }
 }
+
+variable "project" {
+  type        = string
+  description = "GCP project ID"
+  validation {
+    condition     = length(trimspace(var.project)) > 0
+    error_message = "project must not be empty."
+  }
+}

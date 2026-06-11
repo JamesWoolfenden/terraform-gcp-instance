@@ -1,7 +1,8 @@
 resource "google_compute_network" "instance" {
-  name                    = "instance-network"
-  auto_create_subnetworks = false
-  project                 = var.project
+  name                            = "instance-network"
+  auto_create_subnetworks         = false
+  project                         = var.project
+  delete_default_routes_on_create = true
 }
 
 resource "google_compute_subnetwork" "instance" {

@@ -5,4 +5,5 @@ module "instance" {
   service_account_email = google_service_account.instance.email
   kms_key_self_link     = google_kms_crypto_key.instance.id
   network               = google_compute_network.instance.self_link
+  project               = var.project
 }
