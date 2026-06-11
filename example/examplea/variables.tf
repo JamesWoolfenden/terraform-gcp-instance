@@ -1,3 +1,12 @@
+variable "network" {
+  type        = string
+  description = "Name of the VPC network to attach the instance to; must not be the default network"
+  validation {
+    condition     = var.network != "default"
+    error_message = "network must not be the GCP default VPC network."
+  }
+}
+
 variable "project" {
   type        = string
   description = "GCP project ID"
