@@ -1,9 +1,26 @@
-variable "account_id" {
-  type        = string
-  description = "The account ID of the service account to attach to the instance"
+variable "scopes" {
+  type        = list(string)
+  description = "OAuth scopes granted to the instance service account"
+  default = [
+    "https://www.googleapis.com/auth/devstorage.read_only",
+    "https://www.googleapis.com/auth/logging.write",
+    "https://www.googleapis.com/auth/monitoring.write",
+    "https://www.googleapis.com/auth/service.management.readonly",
+    "https://www.googleapis.com/auth/servicecontrol",
+    "https://www.googleapis.com/auth/trace.append",
+  ]
   validation {
-    condition     = length(trimspace(var.account_id)) > 0
-    error_message = "account_id must not be empty."
+    condition     = length(var.scopes) > 0
+    error_message = "scopes must contain at least one OAuth scope."
+  }
+}
+
+variable "service_account_email" {
+  type        = string
+  description = "Email of the service account to attach to the instance; typically an output from a service account module"
+  validation {
+    condition     = can(regex("^.+@.+\\.iam\\.gserviceaccount\\.com$", var.service_account_email))
+    error_message = "service_account_email must be a valid GCP service account email ending in .iam.gserviceaccount.com."
   }
 }
 

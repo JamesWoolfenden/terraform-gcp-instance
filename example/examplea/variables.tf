@@ -1,12 +1,3 @@
-variable "account_id" {
-  type        = string
-  description = "Account ID of the service account to attach to the instance"
-  validation {
-    condition     = length(trimspace(var.account_id)) > 0
-    error_message = "account_id must not be empty."
-  }
-}
-
 variable "project" {
   type        = string
   description = "GCP project ID"

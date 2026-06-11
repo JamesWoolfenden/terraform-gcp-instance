@@ -45,19 +45,19 @@ No modules.
 | Name | Type |
 | ---- | ---- |
 | [google_compute_instance.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance) | resource |
-| [google_service_account.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/service_account) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_account_id"></a> [account\_id](#input\_account\_id) | The account ID of the service account to attach to the instance | `string` | n/a | yes |
 | <a name="input_image"></a> [image](#input\_image) | Boot disk image for the compute instance; must be a supported, non-EOL image family | `string` | `"debian-cloud/debian-12"` | no |
 | <a name="input_kms_key_self_link"></a> [kms\_key\_self\_link](#input\_kms\_key\_self\_link) | Self-link of the KMS CryptoKey used to encrypt the boot disk | `string` | n/a | yes |
 | <a name="input_machine_type"></a> [machine\_type](#input\_machine\_type) | Machine type for the compute instance | `string` | `"e2-medium"` | no |
 | <a name="input_metadata_startup_script"></a> [metadata\_startup\_script](#input\_metadata\_startup\_script) | Shell script to run on instance boot; runs as root with the instance service account credentials. Leave empty to disable. | `string` | `""` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name of the compute instance | `string` | `"instance-1"` | no |
 | <a name="input_network"></a> [network](#input\_network) | Self-link or name of the VPC network to attach the instance to | `string` | n/a | yes |
+| <a name="input_scopes"></a> [scopes](#input\_scopes) | OAuth scopes granted to the instance service account | `list(string)` | <pre>[<br/>  "https://www.googleapis.com/auth/devstorage.read_only",<br/>  "https://www.googleapis.com/auth/logging.write",<br/>  "https://www.googleapis.com/auth/monitoring.write",<br/>  "https://www.googleapis.com/auth/service.management.readonly",<br/>  "https://www.googleapis.com/auth/servicecontrol",<br/>  "https://www.googleapis.com/auth/trace.append"<br/>]</pre> | no |
+| <a name="input_service_account_email"></a> [service\_account\_email](#input\_service\_account\_email) | Email of the service account to attach to the instance; typically an output from a service account module | `string` | n/a | yes |
 | <a name="input_zone"></a> [zone](#input\_zone) | Zone in which to create the compute instance | `string` | `"us-central1-a"` | no |
 
 ## Outputs
@@ -93,8 +93,7 @@ resource "google_project_iam_custom_role" "terraform_pike" {
     "compute.instances.updateNetworkInterface",
     "compute.subnetworks.use",
     "compute.subnetworks.useExternalIp",
-    "compute.zones.get",
-    "iam.serviceAccounts.get"
+    "compute.zones.get"
   ]
 }
 
