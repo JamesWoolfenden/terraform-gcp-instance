@@ -1,4 +1,4 @@
-resource "google_compute_instance" "default" {
+resource "google_compute_instance" "this" {
   name         = var.name
   project      = var.project
   machine_type = var.machine_type
@@ -19,6 +19,7 @@ resource "google_compute_instance" "default" {
 
   shielded_instance_config {
     enable_secure_boot = true
+    enable_vtpm        = true
   }
 
   metadata = {
