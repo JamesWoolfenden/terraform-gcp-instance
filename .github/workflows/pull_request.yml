@@ -13,6 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+# holden:ignore:HLD_CI_017: By Design: This is a reusable workflow that is used to run the terraform plan and apply for pull requests. The service account is passed in as an input to the reusable workflow.
   pr:
     uses: JamesWoolfenden/.github/.github/workflows/terraform-pr-gcp.yml@main
     with:
