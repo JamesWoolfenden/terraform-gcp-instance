@@ -1,0 +1,8 @@
+{
+  "findings": [],
+  "notes": "Initial scan found 10 false-positive findings on google_compute_firewall.deny_ingress (HLD_GCP_009, 037, 128, 207, 208, 275, 276, 278, 292, 293) caused by a holden engine bug: these policies check `path: allow, not_any: {...}` to catch permissive allow blocks, but treat a resource with no allow block at all (deny-only firewall rules) as a match instead of vacuously passing. Root cause fixed directly in holden (E:\\Code\\holden, commit adding `path: allow, absent: true` as an additional `any:` branch to all 9 policies, plus restructuring HLD_GCP_009) rather than suppressed per-repo. Re-scan with the fixed binary confirms all 10 false positives are gone; no suppression comments were needed in this repo's source.",
+  "scan_date": "2026-08-03T00:00:00Z",
+  "scan_path": ". example/examplea",
+  "suggested_policies": [],
+  "suggested_suppressions": []
+}
