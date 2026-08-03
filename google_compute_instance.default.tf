@@ -25,6 +25,10 @@ resource "google_compute_instance" "this" {
     enable_vtpm        = true
   }
 
+  confidential_instance_config {
+    enable_confidential_compute = true
+  }
+
   metadata = {
     block-project-ssh-keys = true
     enable-oslogin         = "TRUE"
@@ -36,4 +40,5 @@ resource "google_compute_instance" "this" {
     scopes = var.scopes
   }
 
+  deletion_protection = true
 }
