@@ -1,0 +1,63 @@
+{
+  "findings": [
+    {
+      "confidence": "high",
+      "explanation": "machine_type (and a few other fields such as service_account/scheduling) can only be changed on a running instance if allow_stopping_for_update = true is set; otherwise the Google provider aborts the apply with an error demanding the instance be stopped manually first. Since machine_type is exposed as a variable here, any consumer who resizes the instance via a normal var change will hit that error instead of a clean stop/update/start cycle.",
+      "file": "google_compute_instance.default.tf",
+      "first_seen": "2026-08-03",
+      "fix": "// variables.tf\nvariable \"allow_stopping_for_update\" {\n  type        = bool\n  default     = true\n  description = \"Allow Terraform to stop the instance to apply updates (e.g. machine_type changes) instead of failing the apply\"\n}\n\n// google_compute_instance.default.tf\nresource \"google_compute_instance\" \"this\" {\n  # ...\n  allow_stopping_for_update = var.allow_stopping_for_update\n  # ...\n}\n",
+      "fixable": true,
+      "id": "HOLDEN_BP_001",
+      "last_seen": "2026-08-03",
+      "line": 4,
+      "principle": "reliability",
+      "remediation": "Expose allow_stopping_for_update as a variable (default true) and wire it into the resource so resizes apply cleanly by default, while still letting callers opt out if they need forced replacement instead.",
+      "resource": "google_compute_instance.this",
+      "severity": "LOW",
+      "status": "fixed",
+      "title": "Instance has no allow_stopping_for_update, so a routine machine_type resize will hard-fail"
+    },
+    {
+      "confidence": "high",
+      "explanation": "initialize_params only sets image. Disk size falls back to the source image's default (often too small for real workloads, e.g. 10GB for Debian) and disk type falls back to pd-standard (the lowest-performance/durability tier). Consumers needing a bigger disk or pd-balanced/pd-ssd currently have no way to do that without forking the module.",
+      "file": "google_compute_instance.default.tf",
+      "first_seen": "2026-08-03",
+      "fix": "// variables.tf\nvariable \"disk_size_gb\" {\n  type        = number\n  default     = null\n  description = \"Boot disk size in GB; null uses the source image's default size\"\n}\n\nvariable \"disk_type\" {\n  type        = string\n  default     = null\n  description = \"Boot disk type (e.g. pd-balanced, pd-ssd); null uses the API default (pd-standard)\"\n}\n\n// google_compute_instance.default.tf\n  boot_disk {\n    kms_key_self_link = var.kms_key_self_link\n\n    initialize_params {\n      image = var.image\n      size  = var.disk_size_gb\n      type  = var.disk_type\n    }\n  }\n",
+      "fixable": true,
+      "id": "HOLDEN_BP_002",
+      "last_seen": "2026-08-03",
+      "line": 11,
+      "principle": "maintainability",
+      "remediation": "Add disk_size_gb and disk_type variables (defaulting to null so existing behavior/API defaults are unchanged for current callers) and pass them through to initialize_params.",
+      "resource": "google_compute_instance.this",
+      "severity": "LOW",
+      "status": "fixed",
+      "title": "Boot disk size and type are hardcoded to API defaults with no variables to override them"
+    },
+    {
+      "confidence": "medium",
+      "explanation": "There's no tags attribute on the instance and no variable to set one. Any firewall rule scoped to this instance's role (rather than the whole network, as example/examplea currently does) has no target to select on.",
+      "file": "google_compute_instance.default.tf",
+      "first_seen": "2026-08-03",
+      "fix": "// variables.tf\nvariable \"tags\" {\n  type        = list(string)\n  default     = []\n  description = \"Network tags to attach to the instance, for firewall rule targeting\"\n}\n\n// google_compute_instance.default.tf\nresource \"google_compute_instance\" \"this\" {\n  # ...\n  tags = var.tags\n  # ...\n}\n",
+      "fixable": true,
+      "id": "HOLDEN_BP_003",
+      "last_seen": "2026-08-03",
+      "line": 1,
+      "principle": "maintainability",
+      "remediation": "Add an optional tags variable (default []) and wire it into the resource so callers can attach network tags for firewall targeting when they need finer-grained rules than network-wide.",
+      "resource": "google_compute_instance.this",
+      "severity": "INFO",
+      "status": "fixed",
+      "title": "Instance has no network tags variable, so firewall rules can't target it specifically"
+    }
+  ],
+  "scan_date": "2026-08-03T00:00:00Z",
+  "scan_path": ".",
+  "suggested_policies": [
+    {
+      "rationale": "allow_stopping_for_update is a narrow, unambiguous check: when absent, changing machine_type (or service_account/scheduling) on a running google_compute_instance causes the Google provider to abort the apply rather than gracefully stop/update/start. This is a repeatable operational-friction pattern across any GCE module that exposes machine_type as a variable, not specific to this repo.",
+      "yaml": "id: HLD_GCP_XXX\nname: GCE instances should set allow_stopping_for_update to support in-place resizing\nprinciple: reliability\nseverity: LOW\nrationale: |\n  Without allow_stopping_for_update = true, changing machine_type (or a\n  handful of other fields) on a running instance causes the Google\n  provider to abort the apply, requiring an out-of-band stop before the\n  change can proceed.\nremediation: |\n  Set allow_stopping_for_update = true (directly, or via a variable) so\n  Terraform can stop, update, and restart the instance automatically:\n    resource \"google_compute_instance\" \"example\" {\n      # ...\n      allow_stopping_for_update = true\n    }\nresources:\n  google_compute_instance:\n    path: allow_stopping_for_update\n    not_null: true\n"
+    }
+  ]
+}

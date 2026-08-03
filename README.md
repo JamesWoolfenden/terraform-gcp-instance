@@ -50,6 +50,9 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
+| <a name="input_allow_stopping_for_update"></a> [allow\_stopping\_for\_update](#input\_allow\_stopping\_for\_update) | Allow Terraform to stop the instance to apply updates (e.g. machine\_type changes) instead of failing the apply | `bool` | `true` | no |
+| <a name="input_disk_size_gb"></a> [disk\_size\_gb](#input\_disk\_size\_gb) | Boot disk size in GB; null uses the source image's default size | `number` | `null` | no |
+| <a name="input_disk_type"></a> [disk\_type](#input\_disk\_type) | Boot disk type (e.g. pd-balanced, pd-ssd); null uses the API default (pd-standard) | `string` | `null` | no |
 | <a name="input_image"></a> [image](#input\_image) | Boot disk image for the compute instance; must be a supported, non-EOL image family | `string` | `"debian-cloud/debian-12"` | no |
 | <a name="input_kms_key_self_link"></a> [kms\_key\_self\_link](#input\_kms\_key\_self\_link) | Self-link of the KMS CryptoKey used to encrypt the boot disk | `string` | n/a | yes |
 | <a name="input_machine_type"></a> [machine\_type](#input\_machine\_type) | Machine type for the compute instance | `string` | `"e2-medium"` | no |
@@ -59,6 +62,7 @@ No modules.
 | <a name="input_project"></a> [project](#input\_project) | GCP project ID | `string` | n/a | yes |
 | <a name="input_scopes"></a> [scopes](#input\_scopes) | OAuth scopes granted to the instance service account | `list(string)` | <pre>[<br/>  "https://www.googleapis.com/auth/devstorage.read_only",<br/>  "https://www.googleapis.com/auth/logging.write",<br/>  "https://www.googleapis.com/auth/monitoring.write",<br/>  "https://www.googleapis.com/auth/service.management.readonly",<br/>  "https://www.googleapis.com/auth/servicecontrol",<br/>  "https://www.googleapis.com/auth/trace.append"<br/>]</pre> | no |
 | <a name="input_service_account_email"></a> [service\_account\_email](#input\_service\_account\_email) | Email of the service account to attach to the instance; typically an output from a service account module | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Network tags to attach to the instance, for firewall rule targeting | `list(string)` | `[]` | no |
 | <a name="input_zone"></a> [zone](#input\_zone) | Zone in which to create the compute instance | `string` | `"us-central1-a"` | no |
 
 ## Outputs
@@ -91,6 +95,8 @@ resource "google_project_iam_custom_role" "terraform_pike" {
     "compute.instances.get",
     "compute.instances.setLabels",
     "compute.instances.setMetadata",
+    "compute.instances.setTags",
+    "compute.instances.stop",
     "compute.instances.updateNetworkInterface",
     "compute.subnetworks.use",
     "compute.subnetworks.useExternalIp",

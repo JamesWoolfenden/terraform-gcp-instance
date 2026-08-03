@@ -37,6 +37,7 @@ variable "image" {
 variable "kms_key_self_link" {
   type        = string
   description = "Self-link of the KMS CryptoKey used to encrypt the boot disk"
+  sensitive   = true
   validation {
     condition     = length(trimspace(var.kms_key_self_link)) > 0
     error_message = "kms_key_self_link must not be empty."
@@ -98,5 +99,41 @@ variable "project" {
   validation {
     condition     = length(trimspace(var.project)) > 0
     error_message = "project must not be empty."
+  }
+}
+
+variable "allow_stopping_for_update" {
+  type        = bool
+  default     = true
+  description = "Allow Terraform to stop the instance to apply updates (e.g. machine_type changes) instead of failing the apply"
+}
+
+variable "disk_size_gb" {
+  type        = number
+  default     = null
+  description = "Boot disk size in GB; null uses the source image's default size"
+  validation {
+    condition     = var.disk_size_gb == null || var.disk_size_gb > 0
+    error_message = "disk_size_gb must be null or a positive number."
+  }
+}
+
+variable "disk_type" {
+  type        = string
+  default     = null
+  description = "Boot disk type (e.g. pd-balanced, pd-ssd); null uses the API default (pd-standard)"
+  validation {
+    condition     = var.disk_type == null || contains(["pd-standard", "pd-balanced", "pd-ssd", "pd-extreme"], var.disk_type)
+    error_message = "disk_type must be null or one of: pd-standard, pd-balanced, pd-ssd, pd-extreme."
+  }
+}
+
+variable "tags" {
+  type        = list(string)
+  default     = []
+  description = "Network tags to attach to the instance, for firewall rule targeting"
+  validation {
+    condition     = alltrue([for t in var.tags : can(regex("^[a-z]([-a-z0-9]*[a-z0-9])?$", t))])
+    error_message = "each tag must start with a lowercase letter, contain only lowercase letters, digits, and hyphens, and not end with a hyphen."
   }
 }
